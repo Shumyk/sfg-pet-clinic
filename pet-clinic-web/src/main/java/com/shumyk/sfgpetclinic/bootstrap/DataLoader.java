@@ -4,18 +4,18 @@ import com.shumyk.sfgpetclinic.model.Owner;
 import com.shumyk.sfgpetclinic.model.Vet;
 import com.shumyk.sfgpetclinic.service.OwnerService;
 import com.shumyk.sfgpetclinic.service.VetService;
-import com.shumyk.sfgpetclinic.service.map.OwnerMapService;
-import com.shumyk.sfgpetclinic.service.map.VetMapService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DataLoader  implements CommandLineRunner {
 
     private final OwnerService ownerService;
     private final VetService vetService;
 
-    public DataLoader() {
-        this.ownerService = new OwnerMapService();
-        this.vetService = new VetMapService();
+    public DataLoader(OwnerService ownerService, VetService vetService) {
+        this.ownerService = ownerService;
+        this.vetService = vetService;
     }
 
     @Override
