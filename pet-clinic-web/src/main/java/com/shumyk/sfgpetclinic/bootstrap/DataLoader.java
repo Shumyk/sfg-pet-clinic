@@ -1,6 +1,7 @@
 package com.shumyk.sfgpetclinic.bootstrap;
 
 import com.shumyk.sfgpetclinic.model.Owner;
+import com.shumyk.sfgpetclinic.model.Pet;
 import com.shumyk.sfgpetclinic.model.PetType;
 import com.shumyk.sfgpetclinic.model.Vet;
 import com.shumyk.sfgpetclinic.service.OwnerService;
@@ -8,6 +9,8 @@ import com.shumyk.sfgpetclinic.service.PetTypeService;
 import com.shumyk.sfgpetclinic.service.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class DataLoader  implements CommandLineRunner {
@@ -36,12 +39,32 @@ public class DataLoader  implements CommandLineRunner {
         Owner owner1 = new Owner();
         owner1.setFirstName("Michael");
         owner1.setLastName("Weston");
+        owner1.setAddress("123 Brickerel");
+        owner1.setCity("Miami");
+        owner1.setTelephone("4234383248");
+
+        Pet mikesPet = new Pet();
+        mikesPet.setPetType(savedDogPetType);
+        mikesPet.setOwner(owner1);
+        mikesPet.setBirthDate(LocalDate.now());
+        mikesPet.setName("Rosco");
+        owner1.getPets().add(mikesPet);
 
         ownerService.save(owner1);
 
         Owner owner2 = new Owner();
         owner2.setFirstName("Fiona");
         owner2.setLastName("Glenanne");
+        owner2.setAddress("525 Hometown");
+        owner2.setCity("LA");
+        owner2.setTelephone("85265661");
+
+        Pet fionasCat = new Pet();
+        fionasCat.setName("JustCatty");
+        fionasCat.setOwner(owner2);
+        fionasCat.setBirthDate(LocalDate.now());
+        fionasCat.setPetType(savedCatPetType);
+        owner2.getPets().add(fionasCat);
 
         ownerService.save(owner2);
 

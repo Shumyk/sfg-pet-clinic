@@ -2,12 +2,13 @@ package com.shumyk.sfgpetclinic.service.map;
 
 import com.shumyk.sfgpetclinic.model.Pet;
 import com.shumyk.sfgpetclinic.service.CrudService;
+import com.shumyk.sfgpetclinic.service.PetService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
-public class PetMapService extends AbstractMapService<Pet, Long> implements CrudService<Pet, Long> {
+public class PetMapService extends AbstractMapService<Pet, Long> implements PetService {
     @Override
     public Set<Pet> findAll() {
         return super.findAll();
