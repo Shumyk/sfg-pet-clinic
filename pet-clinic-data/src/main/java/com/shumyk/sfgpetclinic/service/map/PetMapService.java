@@ -1,13 +1,14 @@
 package com.shumyk.sfgpetclinic.service.map;
 
 import com.shumyk.sfgpetclinic.model.Pet;
-import com.shumyk.sfgpetclinic.service.CrudService;
 import com.shumyk.sfgpetclinic.service.PetService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@Profile({"default", "map"})
 public class PetMapService extends AbstractMapService<Pet, Long> implements PetService {
     @Override
     public Set<Pet> findAll() {
