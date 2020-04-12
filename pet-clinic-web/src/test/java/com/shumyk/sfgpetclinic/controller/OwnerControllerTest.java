@@ -14,9 +14,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Set;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,40 +43,11 @@ class OwnerControllerTest {
 	}
 
 	@Test
-	void listOwners() throws Exception {
-		when(ownerService.findAll()).thenReturn(ownerSet);
-
-		mockMvc.perform(get("/owners"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("owners/index"))
-				.andExpect(model().attribute("owners", hasSize(2)));
-	}
-
-	@Test
-	void listOwnersByIndex() throws Exception {
-		when(ownerService.findAll()).thenReturn(ownerSet);
-
-		mockMvc.perform(get("/owners/index"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("owners/index"))
-				.andExpect(model().attribute("owners", hasSize(2)));
-	}
-
-	@Test
-	void listOwnersByIndexHtml() throws Exception {
-		when(ownerService.findAll()).thenReturn(ownerSet);
-
-		mockMvc.perform(get("/owners/index.html"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("owners/index"))
-				.andExpect(model().attribute("owners", hasSize(2)));
-	}
-
-	@Test
 	void findOwners() throws Exception {
 		mockMvc.perform(get("/owners/find"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("notImplemented"));
+				.andExpect(view().name("owners/findOwners"))
+				.andExpect(model().attributeExists("owner"));
 
 		verifyNoInteractions(ownerService);
 	}
@@ -87,6 +60,23 @@ class OwnerControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("owners/ownerDetails"))
 			.andExpect(model().attribute("owner", hasProperty("id", is(121L))));
+	}
+
+	@Test void processFindFormReturnMany() throws Exception {
+		when(ownerService.findAllByLastNameLike(anyString())).thenReturn(asList(Owner.builder().id(32L).build(), Owner.builder().id(85L).build()));
+
+		mockMvc.perform(get("/owners"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owners/ownersList"))
+			.andExpect(model().attribute("selections", hasSize(2)));
+	}
+
+	@Test void processFindFormReturnOne() throws Exception {
+		doReturn(singletonList(Owner.builder().id(32L).build())).when(ownerService).findAllByLastNameLike(anyString());
+
+		mockMvc.perform(get("/owners"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/owners/32"));
 	}
 
 }
