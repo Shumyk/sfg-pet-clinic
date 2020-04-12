@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Objects.nonNull;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -20,7 +22,9 @@ public class Owner extends Person {
         this.address = address;
         this.city = city;
         this.telephone = telephone;
-        this.pets = pets;
+        if (nonNull(pets)) {
+            this.pets = pets;
+        }
     }
 
     @Column(name = "address") private String address;
@@ -28,4 +32,19 @@ public class Owner extends Person {
     @Column(name = "telephone") private String telephone;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets = new HashSet<>();
+
+    public Pet getPet(final String name) {
+        return getPet(name, false);
+    }
+
+    public Pet getPet(final String name, final boolean ignoreNew) {
+        for (final Pet pet : pets) {
+            if (!ignoreNew || !pet.isNew()) {
+                if (pet.getName().equalsIgnoreCase(name)) {
+                    return pet;
+                }
+            }
+        }
+        return null;
+    }
 }
