@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
+import static java.util.Objects.isNull;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,4 +23,8 @@ public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public boolean isNew() {
+        return isNull(this.id);
+    }
 }
