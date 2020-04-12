@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Objects.nonNull;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -22,7 +24,9 @@ public class Pet extends BaseEntity {
         this.petType = petType;
         this.owner = owner;
         this.birthDate = birthDate;
-        this.visits = visits;
+        if (nonNull(visits) && !visits.isEmpty()) {
+            this.visits = visits;
+        }
     }
 
     @Column(name = "name")
