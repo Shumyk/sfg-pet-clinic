@@ -79,7 +79,7 @@ public class PetControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("owner"))
 			.andExpect(model().attributeExists("pet"))
-			.andExpect(view().name("pet/createOrUpdatePetForm"));
+			.andExpect(view().name("pets/createOrUpdatePetForm"));
 
 		verify(petService).findById(2L);
 
